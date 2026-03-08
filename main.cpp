@@ -1,6 +1,7 @@
 //Ezzat Mohamadein | ComSc 210 | Lab 18
 using namespace std;
 #include <iostream>
+#include <vector>
 
 //define review node
 struct Review {
@@ -12,43 +13,41 @@ struct Review {
     Review* next;
 };
 
-int main() {
-    //create linked list
-    Review* head;
-    //ask user for mode
-    int mode;
-    cout << "Select mode: Add nodes at head (1) or Add nodes at tail (2): ";
-    cin >> mode;
-    cout << endl;
-    //ask user for review
-    double r;
-    string c;
-    cout<< "Review 1:" << endl << "Enter rating (1-5): ";
-    cin >> r;
-    cout <<"Enter comment: ";
-    cin.ignore();
-    getline(cin, c);
-    //create new review node
-    head = new Review(r, c);
-    //ask for second review
-    cout<< endl << "Review 2:" << endl << "Enter rating (1-5): ";
-    cin >> r;
-    cout << "Enter comment: ";
-    cin.ignore();
-    getline(cin, c);
-    //create new review node
-    Review* r2 = new Review(r, c);
-    //add second review to linked list
-    if (mode == 1) {
-        r2->next = head;
-        head = r2;
-    } else if (mode == 2) {
-        head->next = r2;
-    } else {
-        cout << "Invalid mode selected. Exiting program." << endl;
-        return 1;
-    }
+//define movie class
+class Movie {
+    string title;
 
+    public:
+    Movie(string t);
+    Review* head;
+};
+
+//output function prototype
+void output(Review* head);
+//delete linked list function prototype
+void deleteList(Review* head);
+
+int main() {
+    
+
+    return 0;
+}
+
+//define Review constructor
+Review::Review(int r, string c) {
+    rating = r;
+    comment = c;
+    next = nullptr;
+}
+
+//define Movie constructor
+Movie::Movie(string t) {
+    title = t;
+    head = nullptr;
+}
+
+//define output function
+void output(Review* head) {
     //print linked list
     Review* current = head;
     int count = 1;
@@ -64,20 +63,15 @@ int main() {
     }
     //print average rating
     cout << endl << "Average rating: " << sum / (count - 1) << endl;
-
-    //delete linked list
     current = nullptr;
+}
+
+//define delete linked list function
+void deleteList(Review* head) {
+    //delete linked list
     while (head != nullptr) {
         Review* prev = head;
         head = head->next;
         delete prev;
     }
-    return 0;
-}
-
-//define constructor
-Review::Review(int r, string c) {
-    rating = r;
-    comment = c;
-    next = nullptr;
 }
