@@ -2,6 +2,7 @@
 using namespace std;
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 //define review node
 struct Review {
@@ -20,6 +21,7 @@ class Movie {
     public:
     Movie(string t);
     Review* head;
+    string getTitle() {return title;}
 };
 
 //output function prototype
@@ -28,7 +30,43 @@ void output(Review* head);
 void deleteList(Review* head);
 
 int main() {
-    
+    //create movie vector
+    vector<Movie> movies;
+    //add movies to vector
+    movies.push_back(Movie("Movie 1"));
+    movies.push_back(Movie("Movie 2"));
+    movies.push_back(Movie("Movie 3"));
+    movies.push_back(Movie("Movie 4"));
+    //add reviews to movies using comments from comments.txt and randomized ratings
+    ifstream fin("comments.txt");
+    int c = 3;
+    for (int i = 0; i < movies.size(); i++) {
+        for (int j = 0; j < c; j++) {
+            string comment;
+            getline(fin, comment);
+            double rating = rand() % 5 + 1;
+            Review* newReview = new Review(rating, comment);
+            if (movies[i].head == nullptr) {
+                movies[i].head = newReview;
+            } else {
+                Review* current = movies[i].head;
+                while (current->next != nullptr) {
+                    current = current->next;
+                }
+                current->next = newReview;
+            }
+        }
+    }
+    fin.close();
+    //output reviews for each movie
+    for (int i = 0; i < movies.size(); i++) {
+        cout << "Reviews for " << movies[i].getTitle() << ":" << endl;
+        output(movies[i].head);
+    }
+    //delete linked lists
+    for (int i = 0; i < movies.size(); i++) {
+        deleteList(movies[i].head);
+    }
 
     return 0;
 }
@@ -62,7 +100,7 @@ void output(Review* head) {
         count++;
     }
     //print average rating
-    cout << endl << "Average rating: " << sum / (count - 1) << endl;
+    cout << endl << "Average rating: " << sum / (count - 1) << endl << endl;
     current = nullptr;
 }
 
